@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView memeimageview;
     Button sharebutton,nextbutton;
     ProgressBar progressbar;
+    public String str;
 
 
     @Override
@@ -49,12 +50,14 @@ public class MainActivity extends AppCompatActivity {
         progressbar.setVisibility(ProgressBar.VISIBLE);
         String url ="https://meme-api.herokuapp.com/gimme";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    String url = response.getString("url");
-                    Glide.with(MainActivity.this).load(url).into(memeimageview);
-                Glide.with(MainActivity.this).load(url).listener(new RequestListener<Drawable>() {
+//                    String url = response.getString("url");
+                    str = response.getString("url");
+                    Glide.with(MainActivity.this).load(str).into(memeimageview);
+                Glide.with(MainActivity.this).load(str).listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         progressbar.setVisibility(View.INVISIBLE);
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     public void shareMeme(View view) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT,"This is my app");
+        intent.putExtra(Intent.EXTRA_TEXT,"Hey! checkout this cool meme "+str);
         startActivity(intent);
 
     }
